@@ -1,10 +1,7 @@
-//skeleton file for class Binary
-
-public class Binary {
+public class Binary implements Comparable {
 
     private int _decNum;
     private String _binNum;
-
 
     /*=====================================
       default constructor
@@ -38,7 +35,15 @@ public class Binary {
 	_binNum = s;
     }
 
-
+    /*=====================================
+      accessor -- _decNum
+      pre: n/a
+      post: returns _decNum
+      =====================================*/
+    public int getDecNum() {
+	return _decNum;
+    }
+    
     /*=====================================
       String toString() -- returns String representation of this Object
       pre:  n/a
@@ -140,7 +145,12 @@ public class Binary {
       Object), or if this and other represent equal binary values
       =============================================*/
     public boolean equals( Object other ) {
-	return( this == other || this.compareTo(other) == 0 );
+	if( !( other instanceof Binary ) )
+	    throw new ClassCastException( "equals() input not a Binary" );
+	else if( other == null )
+	    throw new NullPointerException( "equals() input not initialized" );
+	else 
+	    return( this == other || this.compareTo(other) == 0 );
     }
 
 
@@ -150,15 +160,32 @@ public class Binary {
       post: Returns 0 if this Object is equal to the input Object,
       negative integer if this<input, positive integer otherwise
       =============================================*/
-    public int compareTo( Object other ) {
-	if( this._decNum == ((Binary)other)._decNum )
-	    return 0;
-	else if( this._decNum > ((Binary)other)._decNum )
-	    return 1;
-	return -1;
+
+    public int compareTo(Object other) {		
+	if ( ! (other instanceof Comparable) ) {
+	    throw new ClassCastException("\nError: compareTo() input not Comparable");
+	}
+	
+	if (other.equals(null)) {
+	    throw new NullPointerException("\nError: compareTo() input can't be null");
+	}
+	
+	if (other instanceof Rational) {
+	    if (_decNum > ((Rational)other).floatValue()) {return 1;}
+	    else if (_decNum == ((Rational)other).floatValue()) {return 0;}
+	    else {return -1;}
+	}
+	
+	if (other instanceof Hexadecimal) {
+	    return _decNum - ((Hexadecimal)other).getDecNum();
+	}
+	
+	if (other instanceof Binary) {
+	    return _decNum - ((Binary)other).getDecNum();
+	}
+	return 0;
     }
-
-
+    
     //main method for testing
     public static void main( String[] args ) {
 

@@ -1,14 +1,10 @@
-/* Team Mellon Collie -- Shamaul Dilmohamed, Anna Tolen
-APCS1 pd10
-HW44 -- This or That or Fourteen Other Things 
-2015-12-08 */
-
-public class Hexadecimal {
+public class Hexadecimal implements Comparable {
 
     private int _decNum;
     private String _hexNum;
     private final static String HEXDIGITS = "0123456789ABCDEF";
 
+    
     /*=====================================
       default constructor
       pre:  n/a
@@ -41,18 +37,25 @@ public class Hexadecimal {
 	_hexNum = s;
     }
 
-
     /*=====================================
       String toString() -- returns String representation of this Object
       pre:  n/a
-      post: returns String of 1's and 0's representing value of this Object
+      post: returns String of digits representing value of this Object
       =====================================*/
     public String toString() { 
 	return _hexNum;
     }
-
-
+    
     /*=====================================
+      accessor -- _decNum
+      pre: n/a
+      post: returns _decNum
+      =====================================*/
+    public int getDecNum() {
+	return _decNum;
+    }
+    
+     /*=====================================
       String decToHex(int) -- converts base-10 input to hexadecimal
       pre:  n >= 0
       post: returns String of bits
@@ -145,7 +148,9 @@ public class Hexadecimal {
     public boolean equals( Object other ) {
 	if ( !( other instanceof Hexadecimal ) )
 	    throw new ClassCastException( "equals() input not a Hexadecimal" );
-	else
+	else if( other == null )
+	    throw new NullPointerException( "equals() input has not been initialized" );
+	else 
 	    return( this == other || this.compareTo(other) == 0 );
     }
 
@@ -156,19 +161,31 @@ public class Hexadecimal {
       post: Returns 0 if this Object is equal to the input Object,
       negative integer if this<input, positive integer otherwise
       =============================================*/
-    public int compareTo( Object other ) {
-	if( !( other instanceof Hexadecimal ) )
-	    throw new ClassCastException( "compareTo() input not a Hexadecimal" );
-	else {
-	    if( this._decNum == ((Hexadecimal)other)._decNum )
-		return 0;
-	    else if( this._decNum > ((Hexadecimal)other)._decNum )
-		return 1;
+    public int compareTo(Object other) {		
+	if ( ! (other instanceof Comparable) ) {
+	    throw new ClassCastException("\nError: compareTo() input not Comparable");
 	}
-	return -1;
+	
+	if (other.equals(null)) {
+	    throw new NullPointerException("\nError: compareTo() input can't be null");
+	}
+	
+	if (other instanceof Rational) {
+	    if (_decNum > ((Rational)other).floatValue()) {return 1;}
+	    else if (_decNum == ((Rational)other).floatValue()) {return 0;}
+	    else {return -1;}
+	}
+	
+	if (other instanceof Hexadecimal) {
+	    return _decNum - ((Hexadecimal)other).getDecNum();
+	}
+	
+	if (other instanceof Binary) {
+	    return _decNum - ((Binary)other).getDecNum();
+	}
+	return 0;
     }
-
-
+    
     //main method for testing
     public static void main( String[] args ) {
 	
@@ -222,7 +239,7 @@ public class Hexadecimal {
 	System.out.println( hexToDecR( "2A" ) ); //should be 42
 
 	System.out.println("\nexception throwing...");
-	String a = "test";
+       	String a = "test";
 	System.out.println( h1.equals(a) );
 	/*=========================================			
 	  =========================================*/

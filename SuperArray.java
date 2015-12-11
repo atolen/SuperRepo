@@ -1,13 +1,13 @@
-/* Team Paranoid Android -- Grace Stempel, Anna Tolen
-APCS1 pd10
-HW42 -- Array of Titanium
-2015-12-04 */
+/* Anna Tolen
+APCS1 pd10 
+HW45 -- Come Together
+2015-12-09 */
 
-public class SuperArray implements ListInt {
+public class SuperArray {
  
     //~~~~~INSTANCE VARS~~~~~
     //underlying container, or "core" of this data structure:
-    private int[] _data;
+    private Comparable[] _data;
 
     //position of last meaningful value
     private int _lastPos;
@@ -20,7 +20,7 @@ public class SuperArray implements ListInt {
     //default constructor – initializes 10-item array
     public SuperArray() 
     { 
-	_data = new int[10];
+	_data = new Comparable[10];
 	_lastPos = -1; //flag to indicate no lastpos yet
 	_size = 0;	
     }
@@ -45,7 +45,7 @@ public class SuperArray implements ListInt {
     //double capacity of this SuperArray
     private void expand() 
     { 
-	int[] temp = new int[ _data.length * 2 ];
+	Comparable[] temp = new Comparable[ _data.length * 2 ];
 	for( int i = 0; i < _data.length; i++ )
 	    temp[i] = _data[i];
 	_data = temp;
@@ -53,14 +53,14 @@ public class SuperArray implements ListInt {
 
 		
     //accessor -- return value at specified index
-    public int get( int index ) { return _data[index]; }
+    public Comparable get( int index ) { return _data[index]; }
 
 		
     //mutator -- set value at index to newVal, 
     //           return old value at index
-    public int set( int index, int newVal ) 
+    public Comparable set( int index, Comparable newVal ) 
     { 
- 	int temp = _data[index];
+ 	Comparable temp = _data[index];
 	_data[index] = newVal;
 	return temp;
     }
@@ -68,8 +68,8 @@ public class SuperArray implements ListInt {
 
     // ~~~~~~~~~~~~~~ PHASE II ~~~~~~~~~~~~~~
     //adds an item after the last item
-    public void add( int newVal ) {
-	int[] temp = new int[_size+1];
+    public void add( Comparable newVal ) {
+	Comparable[] temp = new Comparable[_size+1];
 
 	for( int i = 0; i < _size; i++ ) {
 	    temp[i] = _data[i];
@@ -86,8 +86,8 @@ public class SuperArray implements ListInt {
 
     //inserts an item at index
     //shifts existing elements to the right
-    public void add( int index, int newVal ) {
-	int[] temp = new int[_size +1];
+    public void add( int index, Comparable newVal ) {
+	Comparable[] temp = new Comparable[_size +1];
 
 	for( int i = 0; i < index; i++) {
 	    temp[_data.length - _size + i] = _data[i];
@@ -108,7 +108,7 @@ public class SuperArray implements ListInt {
     //removes the item at index
     //shifts elements left to fill in newly-empted slot
     public void remove( int index ) {
-	int[] temp = new int[_data.length - 1];
+	Comparable[] temp = new Comparable[_data.length - 1];
 	
 	for(int i = 0; i < index; i++){
 	    temp[i] =  _data[i];
@@ -128,18 +128,43 @@ public class SuperArray implements ListInt {
     public int size() { 
 	int counter = 0;
 	for(int i = 0; i < _data.length; i++){
-	    if (_data[i] != 0) {
+	    if (_data[i] != null) {
 		counter ++;
 	    }
 	}
 	return counter;
     }
 
+    public int linSearch( Comparable target ) {
+	for( int i = 0; i < _data.length; i++ )
+	    if( _data[i].equals(target) )
+		return i;
+	return -1;
+    }
+
+    public boolean isSorted() {
+	for( int i = 0; i < _data.length - 1; i++ )
+	    if( _data[i].compareTo(_data[i+1]) == 1 )
+		return false;
+	return true;
+    }
 
     //main method for testing
     public static void main( String[] args ) 
     {
-	SuperArray curtis = new SuperArray();
+	Rational a = new Rational();
+	Rational b = new Rational(1,2);
+	Binary c = new Binary(3);
+	Hexadecimal d = new Hexadecimal(12);
+	
+	SuperArray keats = new SuperArray();
+	//	keats.add(a);
+	//	keats.add(b);
+	keats.add(c);
+	System.out.println(keats);
+	System.out.println(keats.isSorted()); //compareTo() no work
+	System.out.println(keats.linSearch(b)); //equals() no work
+	/*	SuperArray curtis = new SuperArray();
 	System.out.println("Printing empty SuperArray curtis...");
 	System.out.println(curtis);
 
@@ -196,7 +221,7 @@ public class SuperArray implements ListInt {
 	  System.out.println( joy );
 	  joy.add(4);
 	  System.out.println( joy );
-	  System.out.println( joy.get(0) );
+	  System.out.println( joy.get(0) ); */
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 

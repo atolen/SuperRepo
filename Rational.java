@@ -1,8 +1,3 @@
-/* Team Grace Annatomy -- Grace Stempel, Anna Tolen
-APCS1 pd10
-HW41 -- In America, the Driver Sits on the Left
-2015-12-03 */
-
 public class Rational implements Comparable {
     
     // instvars
@@ -22,8 +17,8 @@ public class Rational implements Comparable {
 	    setD( d );
 	}
     }
-    
-    // mutators
+
+     // mutators
     public void setN( int newN ) {
 	n = newN;
     }
@@ -90,11 +85,45 @@ public class Rational implements Comparable {
 	setD( d / gcd );
     }
 
-    public int compareTo( Object r ) {
+  
+    public int compareTo(Object other) {		
+	if ( ! (other instanceof Comparable) ) {
+	    throw new ClassCastException("\nError: compareTo() input not Comparable");
+	}
+	
+	if (other.equals(null)) {
+	    throw new NullPointerException("\nError: compareTo() input can't be null");
+		}
+	
+	if (other instanceof Rational) {
+	    if (floatValue() > ((Rational)other).floatValue()) {return 1;}
+	    else if (floatValue() == ((Rational)other).floatValue()) {return 0;}
+	    else {return -1;}
+	}
+	
+	if (other instanceof Hexadecimal) {
+	    if (floatValue() > ((Hexadecimal)other).getDecNum()) {return 1;}
+	    else if (floatValue() == ((Hexadecimal)other).getDecNum()) {return 0;}
+	    else {return -1;}
+	}
+	
+	if (other instanceof Binary) {
+	    if (floatValue() > ((Binary)other).getDecNum()) {return 1;}
+	    else if (floatValue() == ((Binary)other).getDecNum()) {return 0;}
+	    else {return -1;}
+	}
+	return 0;
+    }
+    /*
+ if( !( r instanceof Rational ) )
+	throw new ClassCastException( "input of compareTo() not a Rational" );
+    else if( r == null )
+	throw new NullPointerException( "input of compareTo() not initialized" );
+    else {
 	Rational t = (Rational)r;
 	this.reduce();
 	t.reduce();
-
+	
 	if( this.n * t.d > t.n * this.d )
 	    return 1;
 	else if( this.n * t.d == t.n * this.d )
@@ -102,14 +131,15 @@ public class Rational implements Comparable {
 	else
 	    return -1;
     }
+*/
 
     public boolean equals( Object r ) {
-	try {
+	if( !( r instanceof Rational ) )
+	    throw new ClassCastException( "input of equals() not a Rational" );
+	else if( r == null )
+	    throw new NullPointerException( "input of equals() not initialized" );
+	else 
 	    return( this.compareTo( r ) == 0 );
-	}
-	catch( ClassCastException e ) {
-	    return false;
-	}
     }
 
     public static void main( String[] args ) {
@@ -122,7 +152,7 @@ public class Rational implements Comparable {
 	Object b = "hi";
        	r.add(s);  //Adds r to s, changes r to 7/6.  s remains 1/2
 	t.reduce(); //Changes t to 2/9
-	
+
 	System.out.println( r + "\tshould be 7/6" );
        	System.out.println( s + "\tshould be 1/2" );
        	System.out.println( t + "\tshould be 2/9" );
